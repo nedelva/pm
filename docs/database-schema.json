@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "storage": {
+    "engine": "sqlite",
+    "runtime_documentation": "This JSON describes the normalized SQLite schema; it is not the runtime database file.",
+    "foreign_keys": true
+  },
+  "tables": {
+    "users": {
+      "primary_key": "id",
+      "columns": {
+        "id": "text",
+        "username": "text unique not null",
+        "password": "text not null",
+        "created_at": "text not null"
+      }
+    },
+    "boards": {
+      "primary_key": "id",
+      "columns": {
+        "id": "text",
+        "user_id": "text unique not null references users(id)",
+        "created_at": "text not null",
+        "updated_at": "text not null"
+      },
+      "constraints": [
+        "one board per user"
+      ]
+    },
+    "columns": {
+      "primary_key": "id",
+      "columns": {
+        "id": "text",
+        "board_id": "text not null references boards(id)",
+        "title": "text not null",
+        "position": "integer not null",
+        "created_at": "text not null",
+        "updated_at": "text not null"
+      },
+      "constraints": [
+        "position is unique within a board",
+        "the application seeds exactly five columns",
+        "columns cannot be added, deleted, or reordered in the MVP"
+      ]
+    },
+    "cards": {
+      "primary_key": "id",
+      "columns": {
+        "id": "text",
+        "board_id": "text not null references boards(id)",
+        "column_id": "text not null references columns(id)",
+        "title": "text not null",
+        "description": "text not null default ''",
+        "position": "integer not null",
+        "created_at": "text not null",
+        "updated_at": "text not null"
+      },
+      "constraints": [
+        "position is unique within a column",
+        "card board_id must match the referenced column board_id",
+        "title length is 1 to 200 characters",
+        "description length is at most 2000 characters"
+      ]
+    },
+    "sessions": {
+      "primary_key": "id",
+      "columns": {
+        "id": "text",
+        "user_id": "text not null references users(id)",
+        "expires_at": "text not null",
+        "created_at": "text not null"
+      },
+      "constraints": [
+        "expired sessions are rejected",
+        "session IDs are opaque random values"
+      ]
+    }
+  },
+  "seed": {
+    "user": {
+      "username": "user",
+      "password": "password"
+    },
+    "columns": [
+      { "id": "col-backlog", "title": "Backlog", "position": 0 },
+      { "id": "col-discovery", "title": "Discovery", "position": 1 },
+      { "id": "col-progress", "title": "In Progress", "position": 2 },
+      { "id": "col-review", "title": "Review", "position": 3 },
+      { "id": "col-done", "title": "Done", "position": 4 }
+    ],
+    "cards": [
+      {
+        "id": "card-1",
+        "column_id": "col-backlog",
+        "title": "Align roadmap themes",
+        "description": "Draft quarterly themes with impact statements and metrics.",
+        "position": 0
+      },
+      {
+        "id": "card-2",
+        "column_id": "col-backlog",
+        "title": "Gather customer signals",
+        "description": "Review support tags, sales notes, and churn feedback.",
+        "position": 1
+      }
+    ]
+  },
+  "board_response": {
+    "id": "board-id",
+    "columns": [
+      {
+        "id": "col-backlog",
+        "title": "Backlog",
+        "card_ids": ["card-1", "card-2"]
+      }
+    ],
+    "cards": {
+      "card-1": {
+        "id": "card-1",
+        "title": "Align roadmap themes",
+        "description": "Draft quarterly themes with impact statements and metrics."
+      }
+    }
+  }
+}
