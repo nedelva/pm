@@ -82,6 +82,7 @@ def test_complete_structured_requests_json_schema_and_decodes_json() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         payload = request.read().decode()
         assert '"response_format"' in payload
+        assert '"reasoning":{"enabled":false}' in payload.replace(" ", "")
         return httpx.Response(
             200,
             json={"choices": [{"message": {"content": '{"message":"Done","operations":[]}'}}]},
