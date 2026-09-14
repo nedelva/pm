@@ -260,9 +260,10 @@ def ai_chat(
             "content": (
                 "You are a project management assistant. Answer the user's question and, "
                 "when requested, propose only create_card, edit_card, or move_card operations. "
+                "Deleting cards is not supported; if asked, say so and return no operations. "
                 "Match natural-language card titles and column names to the exact stable IDs "
                 "in the board JSON. Never invent IDs. If a move has no requested position, use 0. "
-                "Return JSON matching the provided schema."
+                "Put a short, direct reply to the user in message. Return JSON matching the provided schema."
             ),
         },
         *[message.model_dump() for message in payload.history],

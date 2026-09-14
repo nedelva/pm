@@ -6,9 +6,10 @@ Phase 8 uses OpenRouter through a backend-only client. The browser never receive
 
 - `OPENROUTER_API_KEY`: required for live requests.
 - `OPENROUTER_MODEL`: optional model override.
-- Default model selected from the OpenRouter free catalog on 2026-09-13: `nvidia/nemotron-3.5-lightning:free`.
+- Default model selected from the OpenRouter free catalog on 2026-09-14: `nvidia/nemotron-3-super-120b-a12b:free`. Reasoning is disabled in every request so answers stay fast and the JSON output is not truncated by reasoning tokens.
+- The previous default, `nvidia/nemotron-3.5-lightning:free`, was replaced because it returned provider 502 errors, leaked its reasoning into answers, and hit the 30-second timeout.
 
-Free-model availability can change, so the model remains configurable. The selected model is text-capable and is used for both the Phase 8 connectivity check and the Phase 9 structured chat contract.
+Free-model availability can change, so the model remains configurable. OpenRouter free-tier keys are limited to 50 free-model requests per day; when exhausted, the chat shows the rate-limit error until the daily reset. The selected model is text-capable and is used for both the Phase 8 connectivity check and the Phase 9 structured chat contract.
 
 ## Connectivity Check
 

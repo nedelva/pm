@@ -7,7 +7,7 @@ from typing import Any
 import httpx
 
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
-DEFAULT_MODEL = "nvidia/nemotron-3.5-lightning:free"
+DEFAULT_MODEL = "nvidia/nemotron-3-super-120b-a12b:free"
 DEFAULT_TIMEOUT_SECONDS = 30.0
 
 
@@ -40,6 +40,7 @@ class OpenRouterClient:
             "model": self.model,
             "messages": [{"role": "user", "content": prompt}],
             "temperature": 0,
+            "reasoning": {"enabled": False},
             "max_tokens": 100,
         }
         headers = {
@@ -82,6 +83,7 @@ class OpenRouterClient:
             "model": self.model,
             "messages": messages,
             "temperature": 0,
+            "reasoning": {"enabled": False},
             "max_tokens": 1200,
             "response_format": {
                 "type": "json_schema",
@@ -142,6 +144,7 @@ class OpenRouterClient:
             "model": self.model,
             "messages": fallback_messages,
             "temperature": 0,
+            "reasoning": {"enabled": False},
             "max_tokens": 1200,
         }
         headers = {
