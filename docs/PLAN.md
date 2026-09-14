@@ -291,7 +291,7 @@ Completed on 2026-09-13. The authenticated structured chat route sends board JSO
 
 Implementation completed on 2026-09-13. The authenticated board now includes a responsive AI sidebar connected to `/api/ai/chat`; conversation history is browser-held, pending/error states are rendered, and the server-returned board replaces local state after AI operations. The static export was switched from Turbopack to webpack because Turbopack emitted relative chunk-loader paths that caused malformed asset requests and left the visible UI unhydrated. Component and deterministic E2E coverage are added.
 
-Verified on 2026-09-14: frontend lint passed, 10 unit/component tests passed, development E2E passed 7 tests, and production-container E2E passed 7 tests on three consecutive runs against a fresh database. Desktop (1440px) and mobile (375px) layouts were checked in a browser. A live AI create+move request against the production container updated the board. Asked to delete cards, the model returned only no-op edits and the board was unchanged. The system prompt now states that deletes are unsupported; that live re-check was blocked by the OpenRouter free-tier daily limit of 50 requests.
+Verified on 2026-09-14: frontend lint passed, 10 unit/component tests passed, development E2E passed 7 tests, and production-container E2E passed 7 tests on three consecutive runs against a fresh database. Desktop (1440px) and mobile (375px) layouts were checked in a browser. A live AI create+move request against the production container updated the board. Asked to delete cards, the model returned only no-op edits and the board was unchanged. The system prompt now states that deletes are unsupported; a later live re-check confirmed the model refuses and returns no operations.
 
 One earlier production E2E run failed `moves a card between columns` on a database already modified by manual checks; it did not reproduce on a fresh database or in isolation, so no root cause is claimed.
 
@@ -326,6 +326,6 @@ One earlier production E2E run failed `moves a card between columns` on a databa
 - [x] Build the Docker image from a clean context (`docker compose build --no-cache`).
 - [ ] Start and stop it through the platform scripts. macOS shell scripts verified; PowerShell scripts not run.
 - [x] Verify first-run database creation and restart persistence.
-- [ ] Verify login, logout, board operations, AI chat, and failure paths. All verified except the live delete-refusal re-check, blocked by the free-tier daily limit until 2026-09-15 00:00 UTC.
+- [x] Verify login, logout, board operations, AI chat, and failure paths. Live AI re-test on 2026-09-14 after adding OpenRouter credits: text, create+move, edit, follow-up using history, and delete refusal all correct in 0.7-4.7s; the delete request returned no operations and left the board unchanged.
 - [x] Check that secrets are not committed or present in frontend output.
 - [x] Update the minimal README and relevant docs with setup and test commands.
